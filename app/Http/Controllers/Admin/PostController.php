@@ -64,14 +64,14 @@ class PostController extends Controller
     {
         abort_if(Gate::denies('post_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $section_parent_ids = Section::whereIn('id',Section::pluck('parent_id'))->pluck('id');
-        $sections = Section::whereNotIn('id',$section_parent_ids)->pluck('title_kr', 'id');
+        $sections = Section::whereNotIn('id',$section_parent_ids)->pluck('title_uz', 'id');
 
-        $tags = Tag::pluck('title_kr', 'id');
+        $tags = Tag::pluck('title_uz', 'id');
 
-        $tutors = Tutor::pluck('first_name_kr', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $tutors = Tutor::pluck('first_name_uz', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $catTab = 0;
-        $posts = Post::query()->where('status',1)->whereNull('deleted_at')->pluck('title_kr', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $posts = Post::query()->where('status',1)->whereNull('deleted_at')->pluck('title_uz', 'id')->prepend(trans('global.pleaseSelect'), '');
         $locales = config('app.locales');
 
         return view('admin.posts.create', compact('sections', 'tags', 'catTab', 'locales', 'tutors','posts'));
@@ -79,57 +79,26 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-//        if ($request->image_base64) {
-//            [$imageName, $imageName2] = $this->storeBase64($request->image_base64);
-//        }
-        $audio_name = null;
-        if($request->hasFile('audio_file')) {
-            $Fileaudio = $request->file('audio_file');
-            $audio_name = time() . $Fileaudio->getClientOriginalName();
-            $audiopath =$Fileaudio->storeAs('public/audio/' . $audio_name);
-        }
-
-//        if($request->title_kr && (!$request->title_ru || !$request->title_en || !$request->title_uz)) {
-//            foreach (config('app.locales') as $key_local => $value_local) {
-//                if($value_local !== 'kr' && in_array($value_local, $request->langs)) {
-//                    $to_latin = transliterateLatin($request->title_kr);
-//                    $request['title_' . $value_local] = trsTitle($to_latin, $value_local);
-//                }
-//            };
-//        }
-//        if($request->description_kr && (!$request->description_ru || !$request->description_en || !$request->title_uz)) {
-//            foreach (config('app.locales') as $key_local => $value_local) {
-//                if($value_local !== 'kr' && in_array($value_local, $request->langs)) {
-//                    $to_latin = transliterateLatin($request->description_kr);
-//                    $request['description_' . $value_local] = trsTitle($to_latin, $value_local);
-//                }
-//            };
-//        }
 
         $post = Post::create([
             'status' => $request->status,
             'recommended' => $request->recommended,
 
             'title_uz' => $request->title_uz,
-            'title_kr' => $request->title_kr,
             'title_ru' => $request->title_ru,
             'title_en' => $request->title_en,
-            'audio_file' => $audio_name,
 
             'description_uz' => $request->description_uz,
-            'description_kr' => $request->description_kr,
             'description_ru' => $request->description_ru,
             'description_en' => $request->description_en,
 
 
             'content_uz' => $request->content_uz,
-            'content_kr' => $request->content_kr,
             'content_ru' => $request->content_ru,
             'content_en' => $request->content_en,
 
 
             'image_description_uz' => $request->image_description_uz,
-            'image_description_kr' => $request->image_description_kr,
             'image_description_ru' => $request->image_description_ru,
             'image_description_en' => $request->image_description_en,
 
@@ -147,8 +116,8 @@ class PostController extends Controller
         $tags = $request->input('tags', []);
         foreach ($tags as $index => $tag) {
             if ( !is_numeric($tag)) {
-                if(Tag::query()->where('title_kr','like',$tag)->first()){
-                    $tag_id = Tag::query()->where('title_kr','like',$tag)->first()->id;
+                if(Tag::query()->where('title_uz','like',$tag)->first()){
+                    $tag_id = Tag::query()->where('title_uz','like',$tag)->first()->id;
                     $tags[$index] = $tag_id;
                 }
 
@@ -171,78 +140,10 @@ class PostController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $post->id]);
         }
-        if ($request->telegram_send == '1') {
-            if (Carbon::parse($post->publish_date)->format('Y-m-d H:i:s') < Carbon::parse()->format('Y-m-d H:i:s')) {
-                try {
-                    $tg = new Telegram();
-                    $tg->sendPost($post->id);
-                } catch (Exception $e) {};
-            } else {
-                if ($auto_send_post = PostsSendAutoSocialNetwork::query()->where('post_id',$post->id)->first()){
-                    $auto_send_post->update([
-                        'is_send_telegram' => 0,
-                        'telegram_send' => 1
-                    ]);
-                } else {
-                    PostsSendAutoSocialNetwork::create([
-                        'post_id' => $post->id,
-                        'publish_date' => $post->publish_date,
-                        'is_send_telegram' => 0,
-                        'telegram_send' => 1
-                    ]);
-                }
-            }
-        }
 
-//        if ($request->facebook_send == '1') {
-//            if (Carbon::parse($post->publish_date)->format('Y-m-d H:i:s') < Carbon::parse()->format('Y-m-d H:i:s')) {
-//                try {
-//                    $tg = new ApiManager();
-//
-//                    $tg->fbSendPost($post->id);
-//
-//                } catch (Exception $e) {};
-//            } else {
-//                if ($auto_send_post = PostsSendAutoSocialNetwork::query()->where('post_id',$post->id)->first()){
-//                    $auto_send_post->update([
-//                        'is_send_facebook' => 0,
-//                        'facebook_send' => 1
-//                    ]);
-//                } else {
-//                    PostsSendAutoSocialNetwork::create([
-//                        'post_id' => $post->id,
-//                        'publish_date' => $post->publish_date,
-//                        'is_send_facebook' => 0,
-//                        'facebook_send' => 1
-//                    ]);
-//                }
-//            }
-//        }
 
-        if ($request->twitter_send == '1') {
-            if (Carbon::parse($post->publish_date)->format('Y-m-d H:i:s') < Carbon::parse()->format('Y-m-d H:i:s')){
-                try {
-                    $tw = new ApiManager();
 
-                    $tw->twSendPost($post->id);
 
-                } catch (Exception $e) {};
-            } else {
-                if ($auto_send_post = PostsSendAutoSocialNetwork::query()->where('post_id',$post->id)->first()){
-                    $auto_send_post->update([
-                        'is_send_twitter' => 0,
-                        'twitter_send' => 1
-                    ]);
-                } else {
-                    PostsSendAutoSocialNetwork::create([
-                        'post_id' => $post->id,
-                        'publish_date' => $post->publish_date,
-                        'is_send_twitter' => 0,
-                        'twitter_send' => 1
-                    ]);
-                }
-            }
-        }
         return redirect()->route('admin.posts.index');
     }
 
@@ -252,13 +153,13 @@ class PostController extends Controller
         abort_if(Gate::denies('post_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $section_parent_ids = Section::whereIn('id',Section::pluck('parent_id'))->pluck('id');
-        $sections = Section::whereNotIn('id',$section_parent_ids)->pluck('title_kr', 'id');
+        $sections = Section::whereNotIn('id',$section_parent_ids)->pluck('title_uz', 'id');
         $postNetwork = PostsSendAutoSocialNetwork::query()->where('post_id',$post->id)->first();
 
 
-        $tutors = Tutor::pluck('first_name_kr', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $tutors = Tutor::pluck('first_name_uz', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $tags = Tag::pluck('title_kr', 'id');
+        $tags = Tag::pluck('title_uz', 'id');
 
         $post->load('tags');
 
@@ -286,17 +187,12 @@ class PostController extends Controller
             ]);
         }
 
-        if($request->hasFile('audio_file')) {
-            $Fileaudio = $request->file('audio_file');
-            $audio_name = time() . $Fileaudio->getClientOriginalName();
-            $audiopath =$Fileaudio->storeAs('public/audio/' . $audio_name);
-            $post->update(['audio_file' => $audio_name]);
-        }
+
 
         $tags = $request->input('tags', []);
         foreach ($tags as $index => $tag) {
             if ( !is_numeric($tag)) {
-                $tag_id = Tag::query()->where('title_kr','like',$tag)->first()->id;
+                $tag_id = Tag::query()->where('title_uz','like',$tag)->first()->id;
                 $tags[$index] = $tag_id;
             }
         }

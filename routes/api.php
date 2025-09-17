@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\StatisticController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -14,6 +16,7 @@ Route::post("/trs-tag-create",[ \App\Http\Controllers\Admin\TagController::class
 
 
 Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api'], function () {
+    Route::resource('posts', 'PostController');
     Route::get('home/get-news-home', 'HomeController@getNewsHome');
     Route::get('get-post/{id}', 'HomeController@getPostId');
     Route::get('get-category/{id}', 'HomeController@getCategoryId');
@@ -30,4 +33,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api'], function 
     Route::post('auth/register', [AuthController::class,'register']);
 
 
+});
+Route::group(['prefix' => 'v1'], function () {
+    Route::get('posts', [PostController::class, 'index']);
+    Route::get('statistics', [StatisticController::class, 'index']);
 });

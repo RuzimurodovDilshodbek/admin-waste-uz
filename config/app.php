@@ -86,7 +86,7 @@ return [
 
     'localeAdmin' => 'kr',
 
-    'locales' => ['kr', 'uz',  'ru', 'en'],
+    'locales' => ['uz',  'ru', 'en'],
 //    'locales' => ['ЎЗ', 'ŌZ', 'RU', 'EN'],
 
 

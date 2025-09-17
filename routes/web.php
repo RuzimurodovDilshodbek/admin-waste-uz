@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('posts/media', 'PostController@storeMedia')->name('posts.storeMedia');
     Route::post('posts/ckmedia', 'PostController@storeCKEditorImages')->name('posts.storeCKEditorImages');
     Route::resource('posts', 'PostController');
+    Route::resource('statistics', 'StatisticController');
     Route::resource('quotations', 'QuotationController');
 
     Route::get('post/archived', 'PostController@archived')->name('post.archived');

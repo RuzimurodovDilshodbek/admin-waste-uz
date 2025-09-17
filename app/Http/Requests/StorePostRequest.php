@@ -19,12 +19,8 @@ class StorePostRequest extends FormRequest
     public function rules(Request $request)
     {
         return [
-            'title_kr' => [
-                'string',
-                'required',
-            ],
             'title_uz' => [
-                'nullable',
+                'required',
                 'string',
 //                function ($attribute, $value, $fail) use ($request) {
 //                    if (in_array('uz', $request->langs) && empty($value)) {
@@ -54,73 +50,19 @@ class StorePostRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'description_uz' => [
-                'nullable',
-                'string',
-//                function ($attribute, $value, $fail) use ($request) {
-//                    if (in_array('uz', $request->langs) && empty($value)) {
-//                        $fail(trans('validation.required', ['attribute' => trans('validation.attributes.description_uz')]));
-//                    }
-//                },
-            ],
-            'description_kr' => [
-                'string',
-                'required',
-            ],
-            'description_ru' => [
-                'nullable',
-                'string',
-//                function ($attribute, $value, $fail) use ($request) {
-//                    if (in_array('ru', $request->langs) && empty($value)) {
-//                        $fail(trans('validation.required', ['attribute' => trans('validation.attributes.description_en')]));
-//                    }
-//                },
-            ],
-            'description_en' => [
-                'nullable',
-                'string',
-//                function ($attribute, $value, $fail) use ($request) {
-//                    if (in_array('en', $request->langs) && empty($value)) {
-//                        $fail(trans('validation.required', ['attribute' => trans('validation.attributes.description_en')]));
-//                    }
-//                },
-            ],
-            'image_description_uz' => [
-                'string',
-                'nullable',
-            ],
-            'image_description_kr' => [
-                'string',
-                'nullable',
-            ],
-            'image_description_ru' => [
-                'string',
-                'nullable',
-            ],
-            'image_description_en' => [
-                'string',
-                'nullable',
-            ],
             'image_base64' => [
                 'string',
                 'nullable',
             ],
-            'audio_file' => [
-                'nullable',
-            ],
+
             'content_uz' => [
-                'nullable',
+                'required',
                 'string',
 //                function ($attribute, $value, $fail) use ($request) {
 //                    if (in_array('uz', $request->langs) && empty($value)) {
 //                        $fail(trans('validation.required', ['attribute' => trans('validation.attributes.content_uz')]));
 //                    }
 //                },
-            ],
-            'content_kr' => [
-                'nullable',
-                'string',
-                'required',
             ],
             'content_ru' => [
                 'nullable',

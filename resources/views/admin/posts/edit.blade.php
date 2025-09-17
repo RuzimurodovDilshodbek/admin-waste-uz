@@ -29,17 +29,6 @@
                         <label class="form-check-label" for="status">архив</label>
                     </div>
                 </div>
-                <div class="form-group ml-5">
-                    <div class="form-check {{ $errors->has('recommended') ? 'is-invalid' : '' }}">
-                        <input type="hidden" name="recommended" value="0">
-                        <input class="form-check-input" type="checkbox" name="recommended" id="recommended" value="1" {{ ($post->recommended=="1")? "checked" : "" }}>
-                        <label class="form-check-label" for="recommended">Тавсия этилади</label>
-                    </div>
-                    @if($errors->has('recommended'))
-                        <span class="text-danger">{{ $errors->first('recommended') }}</span>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.post.fields.status_helper') }}</span>
-                </div>
             </div>
             <div class="form-group">
                 <h4 class="label-for-checkbox">{{ trans('cruds.post.fields.section') }}</h4>
@@ -50,17 +39,6 @@
                     </div>
                 @endforeach
             </div>
-
-{{--            <div class="form-group">--}}
-{{--                <h4 class="label-for-checkbox">Пост қайси тилларга таржима қилинсин </h4>--}}
-{{--                @foreach (config('app.locales') as $key_title => $value_title)--}}
-{{--                    <div class="form-check form-check-inline">--}}
-{{--                        <input class="form-check-input section-checkboxes" type="checkbox" id="lang_{{$key_title}}" value="{{$value_title}}" name="langs[]" {{ $value_title == 'uz' || $value_title == 'kr' ? 'checked' : ''   }}>--}}
-{{--                        <span for="lang_{{$key_title}}" class="text-uppercase">{{ $value_title }}</span>--}}
-{{--                    </div>--}}
-{{--                @endforeach--}}
-{{--            </div>--}}
-
             <ul class="nav nav-tabs row">
                 @foreach (config('app.locales') as $key_title => $value_title)
                     <li class=" nav-item">
@@ -82,33 +60,6 @@
                             >
                             @if($errors->has('title'))
                                 <span class="text-danger">{{ $errors->first('title') }}</span>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.post.fields.title_helper') }}</span>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <ul class="nav nav-tabs row">
-                @foreach (config('app.locales') as $key_title => $value_title)
-                    <li class=" nav-item">
-                        <a href="#tabdescription{{ $key_title }}" class="nav-link  {{ $catTab == $key_title ? 'active' : '' }} text-uppercase">{{ $value_title }}</a>
-                    </li>
-                @endforeach
-            </ul>
-            <div class="tab-content row">
-                @foreach (config('app.locales') as $key_title => $item_title)
-                    <div class="tab-pane {{ $catTab == $key_title ? 'active' : '' }}" id="tabdescription{{ $key_title }}" style="width: 100%">
-                        <div class="form-group">
-                            <label for="description_{{ $item_title }}">{{ trans('cruds.post.fields.description') }}({{ $item_title }})</label>
-                            <input
-                                class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}"
-                                type="text" name="description_{{ $item_title }}"
-                                id="description_{{ $item_title }}"
-                                value="{{ old('description_'.$item_title, $post['description_'.$item_title]) }}"
-                            >
-                            @if($errors->has('description'))
-                                <span class="text-danger">{{ $errors->first('description') }}</span>
                             @endif
                             <span class="help-block">{{ trans('cruds.post.fields.title_helper') }}</span>
                         </div>
@@ -148,121 +99,6 @@
                 <input type="file" name="image" class="image">
                 <input type="hidden" name="image_base64">
                 <img src="" style="width: 200px;display: none;" class="show-image">
-            </div>
-
-            <ul class="nav nav-tabs row">
-                @foreach (config('app.locales') as $key_title => $value_title)
-                    <li class=" nav-item">
-                        <a href="#tabimagedescription{{ $key_title }}" class="nav-link  {{ $catTab == $key_title ? 'active' : '' }} text-uppercase">{{ $value_title === 'kr' ? 'ўз' : $value_title }}</a>
-                    </li>
-                @endforeach
-            </ul>
-            <div class="tab-content row">
-                @foreach (config('app.locales') as $key_title => $item_title)
-                    <div class="tab-pane {{ $catTab == $key_title ? 'active' : '' }}" id="tabimagedescription{{ $key_title }}" style="width: 100%">
-                        <div class="form-group">
-                            <label for="image_description_{{ $item_title }}">{{ 'Расмга изоҳ' }}({{ $item_title === 'kr' ? 'ўз' : $item_title }})</label>
-                            <input
-                                class="form-control {{ $errors->has('image_description') ? 'is-invalid' : '' }}"
-                                type="text" name="image_description_{{ $item_title }}"
-                                id="image_description_{{ $item_title }}"
-                                value="{{ old('image_description_'.$item_title, $post['image_description_'.$item_title]) }}"
-                            >
-                            @if($errors->has('image_description'))
-                                <span class="text-danger">{{ $errors->first('image_description') }}</span>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.post.fields.title_helper') }}</span>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="form-group">
-                <label for="audio_file">{{ trans('cruds.post.fields.audio_file') }}</label>
-                <input type="file" accept="audio/*" name="audio_file" class="audio_file">
-            </div>
-            <div class="form-group">
-                <label for="youtube_link">{{ trans('cruds.post.fields.youtube_link') }}</label>
-                <input class="form-control {{ $errors->has('youtube_link') ? 'is-invalid' : '' }}" type="text" name="youtube_link" id="youtube_link" value="{{ old('youtube_link', $post->youtube_link) }}">
-                @if($errors->has('youtube_link'))
-                    <span class="text-danger">{{ $errors->first('youtube_link') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.post.fields.youtube_link_helper') }}</span>
-            </div>
-
-            <div class="form-group">
-                <label for="tutor_id">Muharrirni tanlang</label>
-                <select class="form-control select2 {{ $errors->has('tutor') ? 'is-invalid' : '' }}" name="tutor_id" id="tutor_id">
-                    <option value disabled {{ old('type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach($tutors as $id => $entry)
-                        <option value="{{ $id }}" {{ old('tutor_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('tutor'))
-                    <span class="text-danger">{{ $errors->first('tutor') }}</span>
-                @endif
-            </div>
-
-            <div class="form-group">
-                <label for="tags">{{ trans('cruds.post.fields.tags') }}</label>
-                <div style="padding-bottom: 4px">
-                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
-                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
-                </div>
-                <select class="form-control select2 {{ $errors->has('tags') ? 'is-invalid' : '' }}" name="tags[]" id="tags" multiple>
-                    @foreach($tags as $id => $tag)
-                        <option value="{{ $id }}" {{ (in_array($id, old('tags', [])) || $post->tags->contains($id)) ? 'selected' : '' }}>{{ $tag }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('tags'))
-                    <span class="text-danger">{{ $errors->first('tags') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.post.fields.tags_helper') }}</span>
-            </div>
-            @if($postNetwork)
-                <div class="d-flex">
-                    <div class="form-group">
-                        <div class="form-check {{ $errors->has('telegram_send') ? 'is-invalid' : '' }}">
-                            <input type="hidden" name="telegram_send" value="0">
-                            <input class="form-check-input" type="checkbox" name="telegram_send" id="telegram_send" value="1" {{ ($postNetwork->telegram_send=="1")? "checked" : "" }}>
-                            <label class="form-check-label" for="telegram_send">"Telegram"га чиқсин</label>
-                        </div>
-                        @if($errors->has('recommended'))
-                            <span class="text-danger">{{ $errors->first('recommended') }}</span>
-                        @endif
-                        <span class="help-block">{{ trans('cruds.post.fields.status_helper') }}</span>
-                    </div>
-                    <div class="form-group ml-5">
-                        <div class="form-check {{ $errors->has('facebook_send') ? 'is-invalid' : '' }}">
-                            <input type="hidden" name="facebook_send" value="0">
-                            <input class="form-check-input" type="checkbox" name="facebook_send" id="facebook_send" value="1" {{ ($postNetwork->facebook_send=="1")? "checked" : "" }}>
-                            <label class="form-check-label" for="facebook_send">"Facebook"га чиқсин</label>
-                        </div>
-                        @if($errors->has('recommended'))
-                            <span class="text-danger">{{ $errors->first('recommended') }}</span>
-                        @endif
-                        <span class="help-block">{{ trans('cruds.post.fields.status_helper') }}</span>
-                    </div>
-                    <div class="form-group ml-5">
-                        <div class="form-check {{ $errors->has('twitter_send') ? 'is-invalid' : '' }}">
-                            <input type="hidden" name="twitter_send" value="0">
-                            <input class="form-check-input" type="checkbox" name="twitter_send" id="twitter_send" value="1" {{ ($postNetwork->twitter_send=="1")? "checked" : "" }}>
-                            <label class="form-check-label" for="twitter_send">"Twitter"га чиқсин</label>
-                        </div>
-                        @if($errors->has('recommended'))
-                            <span class="text-danger">{{ $errors->first('recommended') }}</span>
-                        @endif
-                        <span class="help-block">{{ trans('cruds.post.fields.status_helper') }}</span>
-                    </div>
-                </div>
-            @endif
-            <div class="form-group">
-                <label for="publish_date">{{ trans('cruds.post.fields.publish_date') }}</label>
-                <input class="form-control datetime {{ $errors->has('publish_date') ? 'is-invalid' : '' }}" type="text" name="publish_date" id="publish_date" value="{{ old('publish_date', $post->publish_date) }}">
-                @if($errors->has('publish_date'))
-                    <span class="text-danger">{{ $errors->first('publish_date') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.post.fields.publish_date_helper') }}</span>
             </div>
             <div class="form-group">
                 <button id="savePost" class="btn btn-danger" type="submit">

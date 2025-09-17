@@ -28,7 +28,7 @@
                             {{ trans('cruds.post.fields.slug') }}
                         </th>
                         <td>
-                            {{ $post->slug_kr }}
+                            {{ $post->slug_uz }}
                         </td>
                     </tr>
                     <tr>
@@ -36,15 +36,7 @@
                             {{ trans('cruds.post.fields.section') }}
                         </th>
                         <td>
-                            {{ implode(', ', $post->sections->pluck('title')->toArray()) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.post.fields.tutor') }}
-                        </th>
-                        <td>
-                            {{ $post->tutor->firstname ?? '' }}
+                            {{ implode(', ', $post->sections->pluck('title_uz')->toArray()) }}
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +44,7 @@
                             {{ trans('cruds.post.fields.title') }}
                         </th>
                         <td>
-                            {{ $post->title }}
+                            {{ $post->title_uz }}
                         </td>
                     </tr>
                     <tr>
@@ -60,7 +52,7 @@
                             {{ trans('cruds.post.fields.content') }}
                         </th>
                         <td>
-                            {!! $post->content !!}
+                            {!! $post->content_uz !!}
                         </td>
                     </tr>
                     <tr>
@@ -87,19 +79,6 @@
                             @endif
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.post.fields.audio_file') }}
-                        </th>
-                        <td>
-                            @if($post->audio_file)
-                                <audio controls>
-                                    <source src="{{ asset('storage/audio/' . $post->audio_file) }}" type="audio/mpeg">
-                                    Your browser does not support the audio element.
-                                </audio>
-                            @endif
-                        </td> 
-                    </tr>   
                     <tr>
                         <th>
                             {{ trans('cruds.post.fields.tags') }}

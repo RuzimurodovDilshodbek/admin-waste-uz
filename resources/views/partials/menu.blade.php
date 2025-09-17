@@ -116,6 +116,16 @@
                         </ul>
                     </li>
                 @endcan
+                @can('statistic_access')
+                    <li class="nav-item">
+                        <a href="{{ route("admin.statistics.index") }}" class="nav-link {{ request()->is("admin/posts") || request()->is("admin.posts.index") ? "active" : "" }}">
+                            <i class="fa-fw nav-icon fas fa-cogs"></i>
+                            <p>
+                                Statistikalar
+                            </p>
+                        </a>
+                    </li>
+                @endcan
                 @can('tag_access')
                     <li class="nav-item">
                         <a href="{{ route("admin.tags.index") }}" class="nav-link {{ request()->is("admin/tags") || request()->is("admin/tags/*") ? "active" : "" }}">

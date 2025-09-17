@@ -63,10 +63,10 @@
 {{--                                {{ $post->slug ?? '' }}--}}
 {{--                            </td>--}}
                             <td>
-                                {{ implode(', ', $post->sections->pluck('title')->toArray()) }}
+                                {{ implode(', ', $post->sections->pluck('title_uz')->toArray()) }}
                             </td>
                             <td>
-                                {{ $post->title ?? '' }}
+                                {{ $post->title_uz ?? '' }}
                             </td>
                             <td>
                                 @if($post->detail_image)
