@@ -95,7 +95,7 @@
                                 @endcan
 
                                 @can('post_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.posts.edit', $post->id) }}">
+                                        <a class="btn btn-xs btn-info" href="{{ isset($section) ? route('admin.postGetSectionIdEdit',['id' => $post->id, 'section_id' => $section->id]) : route('admin.postGetSectionIdEdit', ['id' => $post->id]) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan

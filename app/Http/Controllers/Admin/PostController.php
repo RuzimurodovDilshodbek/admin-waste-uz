@@ -46,6 +46,24 @@ class PostController extends Controller
 
         return view('admin.posts.index', compact('posts'));
     }
+    public function getSectionId(Request $request)
+    {
+
+        $section = Section::query()->where('id',$request->id)->first();
+
+        $sectionIds = Section::query()->where('id', $section->id)->orWhere('parent_id',$section->id)->pluck('id');
+        abort_if(Gate::denies('post_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+
+        $posts = Post::with(['tags', 'media'])
+            ->whereIn('section_ids',$sectionIds)
+            ->groupBy('posts.id')
+            ->orderBy("publish_date", "DESC")
+            ->paginate(30)
+            ->appends(request()->query());
+
+        return view('admin.posts.index', compact('posts','section'));
+    }
 
     public function archived()
     {
@@ -60,18 +78,29 @@ class PostController extends Controller
         return view('admin.posts.index', compact('posts'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         abort_if(Gate::denies('post_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $section_parent_ids = Section::whereIn('id',Section::pluck('parent_id'))->pluck('id');
-        $sections = Section::whereNotIn('id',$section_parent_ids)->pluck('title_uz', 'id');
+
+        if ($id = $request->id) {
+            $sections = Section::where('id', $id)->pluck('title_uz', 'id');
+        } else {
+            $section_parent_ids = Section::whereIn('id', Section::pluck('parent_id'))->pluck('id');
+            $sections = Section::whereNotIn('id', $section_parent_ids)->pluck('title_uz', 'id');
+        }
 
         $tags = Tag::pluck('title_uz', 'id');
 
-        $tutors = Tutor::pluck('first_name_uz', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $tutors = Tutor::pluck('first_name_uz', 'id')
+            ->prepend(trans('global.pleaseSelect'), '');
 
         $catTab = 0;
-        $posts = Post::query()->where('status',1)->whereNull('deleted_at')->pluck('title_uz', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $posts = Post::query()
+            ->where('status', 1)
+            ->whereNull('deleted_at')
+            ->pluck('title_uz', 'id')
+            ->prepend(trans('global.pleaseSelect'), '');
+
         $locales = config('app.locales');
 
         return view('admin.posts.create', compact('sections', 'tags', 'catTab', 'locales', 'tutors','posts'));
@@ -144,7 +173,11 @@ class PostController extends Controller
 
 
 
-        return redirect()->route('admin.posts.index');
+        if ($request->section_ids){
+            return redirect()->route('admin.postGetSectionId',['id' => $request->section_ids]);
+        } else{
+            return redirect()->route('admin.posts.index');
+        }
     }
 
 
@@ -154,6 +187,7 @@ class PostController extends Controller
 
         $section_parent_ids = Section::whereIn('id',Section::pluck('parent_id'))->pluck('id');
         $sections = Section::whereNotIn('id',$section_parent_ids)->pluck('title_uz', 'id');
+
         $postNetwork = PostsSendAutoSocialNetwork::query()->where('post_id',$post->id)->first();
 
 
@@ -169,7 +203,28 @@ class PostController extends Controller
 
         return view('admin.posts.edit', compact('post', 'sections', 'tags', 'tutors','catTab', 'locales', 'postNetwork' ));
     }
+    public function getSectionIdEdit(Request $request)
+    {
+        $post = Post::query()->where('id',$request->id)->first();
+        if ($id = $request->section_id) {
+            $sections = Section::where('id', $id)->pluck('title_uz', 'id');
+        } else {
+            $section_parent_ids = Section::whereIn('id', Section::pluck('parent_id'))->pluck('id');
+            $sections = Section::whereNotIn('id', $section_parent_ids)->pluck('title_uz', 'id');
+        }
 
+
+        $tags = Tag::pluck('title_uz', 'id');
+
+        $post->load('tags');
+        $catTab = 0;
+
+        $postNetwork = PostsSendAutoSocialNetwork::query()->where('post_id',$post->id)->first();
+
+        $locales = config('app.locales');
+
+        return view('admin.posts.edit', compact('post', 'sections', 'tags','catTab','postNetwork', 'locales' ));
+    }
     public function update(UpdatePostRequest $request, Post $post)
     {
 //        if ($request->image_base64) {
@@ -227,7 +282,12 @@ class PostController extends Controller
 //            }
 //        }
 
-        return redirect()->route('admin.posts.index');
+        if ($post->section_ids){
+            return redirect()->route('admin.postGetSectionId',['id' => $post->section_ids[0]]);
+//            return  redirect()->back();
+        } else{
+            return redirect()->route('admin.posts.index');
+        }
     }
 
     public function show(Post $post)
@@ -302,4 +362,5 @@ class PostController extends Controller
 
         return [$imageName, $imageName2];
     }
+
 }

@@ -28,13 +28,6 @@
                             <label class="form-check-label" for="status">архив</label>
                         </div>
                     </div>
-                    <div class="form-group ml-5">
-
-                        @if($errors->has('recommended'))
-                            <span class="text-danger">{{ $errors->first('recommended') }}</span>
-                        @endif
-                        <span class="help-block">{{ trans('cruds.post.fields.status_helper') }}</span>
-                    </div>
                 </div>
 
                 <div class="form-group">
