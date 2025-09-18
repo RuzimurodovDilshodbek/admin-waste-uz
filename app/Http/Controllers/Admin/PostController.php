@@ -302,4 +302,5 @@ class PostController extends Controller
 
         return [$imageName, $imageName2];
     }
+
 }

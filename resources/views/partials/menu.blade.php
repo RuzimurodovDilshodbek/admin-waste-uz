@@ -116,9 +116,33 @@
                         </ul>
                     </li>
                 @endcan
+{{--                @can('section_access')--}}
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ route('admin.postGetSectionId',['id' => 1]) }}" class="nav-link {{ request()->is("admin/post*") && (Request::get('id') == 1 || Request::get('section_id') == 1) ? "active" : "" }}">--}}
+{{--                            <i class="fa-fw nav-icon fas fa-briefcase"></i>--}}
+{{--                            <p>Xabarlar</p>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                @endcan--}}
+{{--                @can('section_access')--}}
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ route('admin.postGetSectionId',['id' => 5]) }}" class="nav-link {{ request()->is("admin/post*") && (Request::get('id') == 5 || Request::get('section_id') == 5) ? "active" : "" }}">--}}
+{{--                            <i class="fa-fw nav-icon fas fa-briefcase"></i>--}}
+{{--                            <p>Eko muammo</p>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                @endcan--}}
+{{--                @can('section_access')--}}
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ route('admin.postGetSectionId',['id' => 14]) }}" class="nav-link {{ request()->is("admin/post*") && (Request::get('id') == 14 || Request::get('section_id') == 14) ? "active" : "" }}">--}}
+{{--                            <i class="fa-fw nav-icon fas fa-briefcase"></i>--}}
+{{--                            <p>Eko volontiyorlik</p>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                @endcan--}}
                 @can('statistic_access')
                     <li class="nav-item">
-                        <a href="{{ route("admin.statistics.index") }}" class="nav-link {{ request()->is("admin/posts") || request()->is("admin.posts.index") ? "active" : "" }}">
+                        <a href="{{ route("admin.statistics.index") }}" class="nav-link {{ request()->is("admin/statistics") || request()->is("admin.posts.index") ? "active" : "" }}">
                             <i class="fa-fw nav-icon fas fa-cogs"></i>
                             <p>
                                 Statistikalar
@@ -126,85 +150,10 @@
                         </a>
                     </li>
                 @endcan
-                @can('tag_access')
-                    <li class="nav-item">
-                        <a href="{{ route("admin.tags.index") }}" class="nav-link {{ request()->is("admin/tags") || request()->is("admin/tags/*") ? "active" : "" }}">
-                            <i class="fa-fw nav-icon fas fa-cogs"></i>
-                            <p>
-                                {{ trans('cruds.tag.title') }}
-                            </p>
-                        </a>
-                    </li>
-                @endcan
 
-                @can('ad_access')
-                    <li class="nav-item">
-                        <a href="{{ route("admin.ads.index") }}" class="nav-link {{ request()->is("admin/ads") || request()->is("admin/ads/*") ? "active" : "" }}">
-                            <i class="fa-fw nav-icon fas fa-cogs">
 
-                            </i>
-                            <p>
-                                {{ trans('cruds.ad.title') }}
-                            </p>
-                        </a>
-                    </li>
-                @endcan
-{{--                @can('newsletter_access')--}}
-{{--                    <li class="nav-item">--}}
-{{--                        <a href="{{ route("admin.newsletters.index") }}" class="nav-link {{ request()->is("admin/newsletters") || request()->is("admin/newsletters/*") ? "active" : "" }}">--}}
-{{--                            <i class="fa-fw nav-icon fas fa-cogs">--}}
 
-{{--                            </i>--}}
-{{--                            <p>--}}
-{{--                                {{ trans('cruds.newsletter.title') }}--}}
-{{--                            </p>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                @endcan--}}
-                @can('tutor_access')
-                    <li class="nav-item">
-                        <a href="{{ route("admin.tutors.index") }}" class="nav-link {{ request()->is("admin/tutors") || request()->is("admin/tutors/*") ? "active" : "" }}">
-                            <i class="fa-fw nav-icon fas fa-cogs"></i>
-                            <p>
-                                {{ trans('cruds.tutor.title') }}
-                            </p>
-                        </a>
-                    </li>
-                @endcan
-                @can('ad_view_access')
-                    <li class="nav-item">
-                        <a href="{{ route("admin.ad-views.index") }}" class="nav-link {{ request()->is("admin/ad-views") || request()->is("admin/ad-views/*") ? "active" : "" }}">
-                            <i class="fa-fw nav-icon fas fa-cogs">
 
-                            </i>
-                            <p>
-                                {{ trans('cruds.adView.title') }}
-                            </p>
-                        </a>
-                    </li>
-                @endcan
-                @can('post_view_access')
-{{--                    <li class="nav-item">--}}
-{{--                        <a href="{{ route("admin.post-views.index") }}" class="nav-link {{ request()->is("admin/post-views") || request()->is("admin/post-views/*") ? "active" : "" }}">--}}
-{{--                            <i class="fa-fw nav-icon fas fa-cogs">--}}
-
-{{--                            </i>--}}
-{{--                            <p>--}}
-{{--                                {{ trans('cruds.postView.title') }}--}}
-{{--                            </p>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-                    <li class="nav-item">
-                        <a href="{{ route("admin.post-views-show.index") }}" class="nav-link {{ request()->is("admin/post-views-show") || request()->is("admin/post-views-show/*") ? "active" : "" }}">
-                            <i class="fa-fw nav-icon fas fa-cogs">
-
-                            </i>
-                            <p>
-                                {{ trans('cruds.postView.title') }}
-                            </p>
-                        </a>
-                    </li>
-                @endcan
                 @if(file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
                     @can('profile_password_edit')
                         <li class="nav-item">
