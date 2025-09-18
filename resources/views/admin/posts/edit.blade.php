@@ -21,11 +21,11 @@
             <div class="d-flex">
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="status" value="1" name="status" {{ ($post->status=="1")? "checked" : "" }}>
+                        <input class="form-check-input" type="radio" id="status" value="1" name="status" {{ ($post->status==true)? "checked" : "" }}>
                         <label class="form-check-label" for="status">актив</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="status" value="2" name="status" {{ ($post->status=="2")? "checked" : "" }}>
+                        <input class="form-check-input" type="radio" id="status" value="2" name="status" {{ ($post->status==false)? "checked" : "" }}>
                         <label class="form-check-label" for="status">архив</label>
                     </div>
                 </div>
