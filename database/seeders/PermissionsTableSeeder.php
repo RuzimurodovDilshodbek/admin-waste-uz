@@ -446,6 +446,19 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 109,
                 'title' => 'video_edit',
             ],
+            [
+                'id'    => 110,
+                'title' => 'statistic_access',
+            ],
+            [
+                'id'    => 111,
+                'title' => 'statistic_edit',
+            ],
+            [
+                'id'    => 112,
+                'title' => 'statistic_update',
+            ],
+
         ];
 
         Permission::insert($permissions);
