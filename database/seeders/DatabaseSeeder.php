@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 //            RoleUserTableSeeder::class,
 //            SampleData::class,
 //        StatisticsTableSeeder::class
+
         SectionsTableSeeder::class
         ]);
     }
