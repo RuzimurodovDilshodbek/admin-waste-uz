@@ -9,9 +9,20 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     // GET /api/v1/posts
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all();
-        return response()->json($posts);
+        $query = Post::query();
+
+        // agar section_id yuborilsa filterlash
+        if ($request->has('section_id')) {
+            $query->whereJsonContains('section_ids', $request->section_id);
+        }
+
+        $posts = $query->latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $posts
+        ]);
     }
 }
