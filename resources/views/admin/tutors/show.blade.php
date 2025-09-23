@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.tutors.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.managementPersons.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -17,7 +17,7 @@
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.id') }}
+                            ID
                         </th>
                         <td>
                             {{ $tutor->id }}
@@ -25,7 +25,7 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.slug') }}
+                            Slug
                         </th>
                         <td>
                             {{ $tutor->slug }}
@@ -33,23 +33,23 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.firstname') }}
+                            F.I.SH
                         </th>
                         <td>
-                            {{ $tutor->firstname }}
+                            {{ $tutor->full_name_uz }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.lastname') }}
+                            Lavozim
                         </th>
                         <td>
-                            {{ $tutor->lastname }}
+                            {{ $tutor->position_name_uz }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.photo') }}
+                            Photo
                         </th>
                         <td>
                             @if($tutor->photo)
@@ -59,81 +59,41 @@
                             @endif
                         </td>
                     </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            Biografiya--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $tutor->about_uz }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            Vazifalari--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $tutor->tasks_uz }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.about') }}
+                            Email
                         </th>
                         <td>
-                            {!! $tutor->about !!}
+                            {{ $tutor->email }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.facebook') }}
+                            Telefon
                         </th>
                         <td>
-                            {{ $tutor->facebook }}
+                            {{ $tutor->phone }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.twitter') }}
-                        </th>
-                        <td>
-                            {{ $tutor->twitter }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.gmail') }}
-                        </th>
-                        <td>
-                            {{ $tutor->gmail }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.rss') }}
-                        </th>
-                        <td>
-                            {{ $tutor->rss }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.youtube') }}
-                        </th>
-                        <td>
-                            {{ $tutor->youtube }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.linkedin') }}
-                        </th>
-                        <td>
-                            {{ $tutor->linkedin }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.telegram') }}
-                        </th>
-                        <td>
-                            {{ $tutor->telegram }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.instagram') }}
-                        </th>
-                        <td>
-                            {{ $tutor->instagram }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.sort') }}
+                            Saralash
                         </th>
                         <td>
                             {{ $tutor->sort }}
@@ -141,23 +101,7 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.tutor.fields.meta_description') }}
-                        </th>
-                        <td>
-                            {{ $tutor->meta_description }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.meta_keywords') }}
-                        </th>
-                        <td>
-                            {{ $tutor->meta_keywords }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.tutor.fields.status') }}
+                            Holati
                         </th>
                         <td>
                             <input type="checkbox" disabled="disabled" {{ $tutor->status ? 'checked' : '' }}>
@@ -166,7 +110,7 @@
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.tutors.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.managementPersons.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

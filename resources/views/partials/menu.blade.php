@@ -150,6 +150,16 @@
                         </a>
                     </li>
                 @endcan
+                @can('tutor_access')
+                    <li class="nav-item">
+                        <a href="{{ route("admin.managementPersons.index") }}" class="nav-link {{ request()->is("admin/managementPersons") || request()->is("admin/managementPersons/*") ? "active" : "" }}">
+                            <i class="fa-fw nav-icon fas fa-cogs"></i>
+                            <p>
+                                Boshqaruv xodimlari
+                            </p>
+                        </a>
+                    </li>
+                @endcan
 
 
                 @can('section_access')
@@ -157,7 +167,7 @@
                         <a href="{{ route("admin.sections.index") }}" class="nav-link {{ request()->is("admin/sections") || request()->is("admin/sections/*") ? "active" : "" }}">
                             <i class="fa-fw nav-icon fas fa-cogs"></i>
                             <p>
-                                {{ trans('cruds.section.title') }}
+                                Bo'limlar
                             </p>
                         </a>
                     </li>
@@ -170,7 +180,7 @@
                                 <i class="fa-fw fas fa-key nav-icon">
                                 </i>
                                 <p>
-                                    {{ trans('global.change_password') }}
+                                    Parolni o'zgartirish
                                 </p>
                             </a>
                         </li>
@@ -182,7 +192,7 @@
                             <i class="fas fa-fw fa-sign-out-alt nav-icon">
 
                             </i>
-                            <p>{{ trans('global.logout') }}</p>
+                            <p>Chiqish</p>
                         </p>
                     </a>
                 </li>

@@ -3,15 +3,15 @@
 @can('tutor_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.tutors.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.tutor.title_singular') }}
+            <a class="btn btn-success" href="{{ route('admin.managementPersons.create') }}">
+               Xodim qo'shish
             </a>
         </div>
     </div>
 @endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.tutor.title_singular') }} {{ trans('global.list') }}
+        Boshqaruv xodimlari ro'yxati
     </div>
 
     <div class="card-body">
@@ -26,55 +26,28 @@
                             {{ trans('cruds.tutor.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.tutor.fields.slug') }}
+                            Slug
                         </th>
                         <th>
-                            {{ trans('cruds.tutor.fields.firstname') }}
+                            F.I.SH
                         </th>
                         <th>
-                            {{ trans('cruds.tutor.fields.lastname') }}
+                            Lavozim
                         </th>
                         <th>
-                            {{ trans('cruds.tutor.fields.photo') }}
+                            Photo
                         </th>
                         <th>
-                            {{ trans('cruds.tutor.fields.facebook') }}
+                            Email
                         </th>
                         <th>
-                            {{ trans('cruds.tutor.fields.twitter') }}
+                            Telefon
                         </th>
                         <th>
-                            {{ trans('cruds.tutor.fields.gmail') }}
+                           Saralash
                         </th>
                         <th>
-                            {{ trans('cruds.tutor.fields.rss') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.youtube') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.linkedin') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.telegram') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.instagram') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.sort') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.meta_title') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.meta_description') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.meta_keywords') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.tutor.fields.status') }}
+                            Holati
                         </th>
                         <th>
                             &nbsp;
@@ -94,10 +67,10 @@
                                 {{ $tutor->slug ?? '' }}
                             </td>
                             <td>
-                                {{ $tutor->first_name_kr ?? '' }}
+                                {{ $tutor->full_name_kr ?? '' }}
                             </td>
                             <td>
-                                {{ $tutor->last_name_kr ?? '' }}
+                                {{ $tutor->position_name_kr ?? '' }}
                             </td>
                             <td>
                                 @if($tutor->photo)
@@ -107,28 +80,10 @@
                                 @endif
                             </td>
                             <td>
-                                {{ $tutor->facebook ?? '' }}
+                                {{ $tutor->email ?? '' }}
                             </td>
                             <td>
-                                {{ $tutor->twitter ?? '' }}
-                            </td>
-                            <td>
-                                {{ $tutor->gmail ?? '' }}
-                            </td>
-                            <td>
-                                {{ $tutor->rss ?? '' }}
-                            </td>
-                            <td>
-                                {{ $tutor->youtube ?? '' }}
-                            </td>
-                            <td>
-                                {{ $tutor->linkedin ?? '' }}
-                            </td>
-                            <td>
-                                {{ $tutor->telegram ?? '' }}
-                            </td>
-                            <td>
-                                {{ $tutor->instagram ?? '' }}
+                                {{ $tutor->phone ?? '' }}
                             </td>
                             <td>
                                 {{ $tutor->sort ?? '' }}
@@ -139,19 +94,19 @@
                             </td>
                             <td>
                                 @can('tutor_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.tutors.show', $tutor->id) }}">
-                                        {{ trans('global.view') }}
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.managementPersons.show', $tutor->id) }}">
+                                       Ko'rish
                                     </a>
                                 @endcan
 
                                 @can('tutor_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.tutors.edit', $tutor->id) }}">
-                                        {{ trans('global.edit') }}
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.managementPersons.edit', $tutor->id) }}">
+                                        Tahrirlash
                                     </a>
                                 @endcan
 
                                 @can('tutor_delete')
-                                    <form action="{{ route('admin.tutors.destroy', $tutor->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('admin.managementPersons.destroy', $tutor->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -180,7 +135,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.tutors.massDestroy') }}",
+    url: "{{ route('admin.managementPersons.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

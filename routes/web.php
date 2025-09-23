@@ -69,6 +69,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('tutors/ckmedia', 'TutorController@storeCKEditorImages')->name('tutors.storeCKEditorImages');
     Route::resource('tutors', 'TutorController');
 
+    // Tutor
+    Route::delete('managementPersons/destroy', 'ManagementPersonController@massDestroy')->name('managementPersons.massDestroy');
+    Route::post('managementPersons/media', 'ManagementPersonController@storeMedia')->name('managementPersons.storeMedia');
+    Route::post('managementPersons/ckmedia', 'ManagementPersonController@storeCKEditorImages')->name('managementPersons.storeCKEditorImages');
+    Route::resource('managementPersons', 'ManagementPersonController');
+
     // Banner Post
     Route::delete('banner-posts/destroy', 'BannerPostController@massDestroy')->name('banner-posts.massDestroy');
     Route::post('banner-posts/media', 'BannerPostController@storeMedia')->name('banner-posts.storeMedia');

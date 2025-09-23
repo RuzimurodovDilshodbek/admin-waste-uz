@@ -15,12 +15,25 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route("admin.tutors.update", [$tutor->id]) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route("admin.managementPersons.update", [$tutor->id]) }}" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
+                <div class="d-flex">
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="type" value="management" name="type" checked>
+                            <label class="form-check-label" for="type">Raxbariyat</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="type" value="central_apparatus" name="type">
+                            <label class="form-check-label" for="type">Markaziy apparat</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
-                    <label class="required" for="slug">{{ trans('cruds.tutor.fields.slug') }}</label>
-                    <input class="form-control {{ $errors->has('slug') ? 'is-invalid' : '' }}" type="text" name="slug" id="slug" value="{{ old('slug', $tutor->slug) }}" required>
+                    <label class="required" for="slug">Slug</label>
+                    <input class="form-control {{ $errors->has('slug') ? 'is-invalid' : '' }}" type="text" name="slug" id="slug" value="{{ old('slug', $tutor['slug']) }}" required>
                     @if($errors->has('slug'))
                         <span class="text-danger">{{ $errors->first('slug') }}</span>
                     @endif
@@ -30,26 +43,25 @@
                 <ul class="nav nav-tabs row">
                     @foreach (config('app.locales') as $key_content => $value_content)
                         <li class=" nav-item">
-                            <a href="#firstname_{{ $value_content }}" class="nav-link  {{ $catTab == $key_content ? 'active' : '' }} text-uppercase">{{ $value_content === 'kr' ? 'ўз' : $value_content}}</a>
+                            <a href="#full_name_{{ $value_content }}" class="nav-link  {{ $catTab == $key_content ? 'active' : '' }} text-uppercase">{{ $value_content === 'kr' ? 'ўз' : $value_content}}</a>
                         </li>
                     @endforeach
                 </ul>
                 <div class="tab-content row">
                     @foreach (config('app.locales') as $key_content => $item_content)
-                        <div class="tab-pane {{ $catTab == $key_content ? 'active' : '' }}" id="firstname_{{ $item_content }}" style="width: 100%">
+                        <div class="tab-pane {{ $catTab == $key_content ? 'active' : '' }}" id="full_name_{{ $item_content }}" style="width: 100%">
                             <div class="form-group">
-                                <label for="firstname">{{ trans('cruds.tutor.fields.firstname') }}({{ $value_content === 'kr' ? 'ўз' : $item_content }})</label>
+                                <label for="full_name">F.I.SH({{ $value_content === 'kr' ? 'ўз' : $item_content }})</label>
                                 <input
-                                    class="form-control {{ $errors->has('first_name') ? 'is-invalid' : '' }}"
-                                    type="text" name="first_name_{{ $item_content }}"
-                                    id="first_name_{{ $item_content }}"
-                                    value="{{ old('first_name_'.$item_content, $tutor['first_name_'.$item_content]) }}"
-
+                                    class="form-control {{ $errors->has('full_name') ? 'is-invalid' : '' }}"
+                                    type="text" name="full_name_{{ $item_content }}"
+                                    id="full_name_{{ $item_content }}"
+                                    value="{{ old('full_name_'.$item_content, $tutor['full_name_'.$item_content]) }}"
                                 >
-                                @if($errors->has('firstname'))
-                                    <span class="text-danger">{{ $errors->first('firstname') }}</span>
+                                @if($errors->has('full_name'))
+                                    <span class="text-danger">{{ $errors->first('full_name') }}</span>
                                 @endif
-                                <span class="help-block">{{ trans('cruds.tutor.fields.firstname_helper') }}</span>
+                                {{--                            <span class="help-block">{{ trans('cruds.tutor.fields.full_name_helper') }}</span>--}}
                             </div>
                         </div>
                     @endforeach
@@ -58,160 +70,179 @@
                 <ul class="nav nav-tabs row">
                     @foreach (config('app.locales') as $key_content => $value_content)
                         <li class=" nav-item">
-                            <a href="#lastname_{{ $value_content }}" class="nav-link  {{ $catTab == $key_content ? 'active' : '' }} text-uppercase">{{ $value_content === 'kr' ? 'ўз' : $value_content}}</a>
+                            <a href="#position_name_{{ $value_content }}" class="nav-link  {{ $catTab == $key_content ? 'active' : '' }} text-uppercase">{{ $value_content === 'kr' ? 'ўз' : $value_content}}</a>
                         </li>
                     @endforeach
                 </ul>
                 <div class="tab-content row">
                     @foreach (config('app.locales') as $key_content => $item_content)
-                        <div class="tab-pane {{ $catTab == $key_content ? 'active' : '' }}" id="lastname_{{ $item_content }}" style="width: 100%">
+                        <div class="tab-pane {{ $catTab == $key_content ? 'active' : '' }}" id="position_name_{{ $item_content }}" style="width: 100%">
                             <div class="form-group">
-                                <label for="lastname">{{ trans('cruds.tutor.fields.lastname') }}({{ $item_content === 'kr' ? 'ўз' : $item_content }})</label>
+                                <label for="position_name">Lavozim({{ $item_content === 'kr' ? 'ўз' : $item_content }})</label>
                                 <input
-                                    class="form-control {{ $errors->has('last_name') ? 'is-invalid' : '' }}"
-                                    type="text" name="last_name_{{ $item_content }}"
-                                    id="last_name_{{ $item_content }}"
-                                    value="{{ old('last_name_'.$item_content, $tutor['last_name_'.$item_content]) }}"
+                                    class="form-control {{ $errors->has('position_name') ? 'is-invalid' : '' }}"
+                                    type="text" name="position_name_{{ $item_content }}"
+                                    id="position_name_{{ $item_content }}"
+                                    value="{{ old('position_name_'.$item_content, $tutor['position_name_'.$item_content]) }}"
 
                                 >
-                                @if($errors->has('lastname'))
-                                    <span class="text-danger">{{ $errors->first('lastname') }}</span>
+                                @if($errors->has('position_name'))
+                                    <span class="text-danger">{{ $errors->first('position_name') }}</span>
                                 @endif
-                                <span class="help-block">{{ trans('cruds.tutor.fields.lastname_helper') }}</span>
                             </div>
                         </div>
                     @endforeach
                 </div>
+
+
                 <div class="form-group">
-                    <label for="detail_image">{{ trans('cruds.tutor.fields.photo') }}</label>
+                    <label class="required" for="detail_image">Photo</label>
                     <input type="file" name="image" class="image">
                     <input type="hidden" name="image_base64">
                     <img src="" style="width: 200px;display: none;" class="show-image">
-                    {{--                <div class="needsclick dropzone {{ $errors->has('photo') ? 'is-invalid' : '' }}" id="photo-dropzone">--}}
-                    {{--                </div>--}}
-                    {{--                @if($errors->has('photo'))--}}
-                    {{--                    <span class="text-danger">{{ $errors->first('photo') }}</span>--}}
-                    {{--                @endif--}}
-                    {{--                <span class="help-block">{{ trans('cruds.tutor.fields.photo_helper') }}</span>--}}
                 </div>
+
+                {{-- ABOUT --}}
                 <ul class="nav nav-tabs row">
                     @foreach (config('app.locales') as $key_about => $value_about)
-                        <li class=" nav-item">
-                            <a href="#tab_{{ $value_about }}" class="nav-link  {{ $catTab == $key_about ? 'active' : '' }} text-uppercase">{{ $value_about === 'kr' ? 'ўз' : $value_about}}</a>
+                        <li class="nav-item">
+                            <a href="#tab_about_{{ $value_about }}"
+                               class="nav-link {{ $catTab == $key_about ? 'active' : '' }} text-uppercase">
+                                {{ $value_about === 'kr' ? 'ўз' : $value_about}}
+                            </a>
                         </li>
                     @endforeach
                 </ul>
                 <div class="tab-content row">
                     @foreach (config('app.locales') as $key_about => $item_about)
-                        <div class="tab-pane {{ $catTab == $key_about ? 'active' : '' }}" id="tab_{{ $item_about }}" style="width: 100%">
+                        <div class="tab-pane {{ $catTab == $key_about ? 'active' : '' }}"
+                             id="tab_about_{{ $item_about }}" style="width: 100%">
                             <div class="form-group">
-                                <label for="content">{{ trans('cruds.post.fields.content') }}({{ $item_about === 'kr' ? 'ўз' : $item_about }})</label>
+                                <label for="about">Biografiya ({{ $item_about === 'kr' ? 'ўз' : $item_about }})</label>
                                 <textarea id="about_{{ $item_about }}" class="textarea form-control summernote"
                                           style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
-                                  name="about_{{ $item_about }}"
-                                >{{ old('about_'.$item_about, $tutor['about_'.$item_about]) }} </textarea>
-
-                                {{--                            <textarea class="form-control ckeditor {{ $errors->has('content') ? 'is-invalid' : '' }}" name="about_{{ $item_content }}" id="about_{{ $item_content }}"></textarea>--}}
-                                @if($errors->has('content'))
-                                    <span class="text-danger">{{ $errors->first('about') }}</span>
-                                @endif
-                                <span class="help-block">{{ trans('cruds.tutor.fields.about_helper') }}</span>
+                                          name="about_{{ $item_about }}">{{ old('about_'.$item_about, $tutor['about_'.$item_about]) }}</textarea>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
-                {{--            <div class="form-group">--}}
-                {{--                <label for="about">{{ trans('cruds.tutor.fields.about') }}</label>--}}
-                {{--                <textarea class="form-control ckeditor {{ $errors->has('about') ? 'is-invalid' : '' }}" name="about" id="about">{!! old('about') !!}</textarea>--}}
-                {{--                @if($errors->has('about'))--}}
-                {{--                    <span class="text-danger">{{ $errors->first('about') }}</span>--}}
-                {{--                @endif--}}
-                {{--                <span class="help-block">{{ trans('cruds.tutor.fields.about_helper') }}</span>--}}
-                {{--            </div>--}}
-                <div class="form-group">
-                    <label for="facebook">{{ trans('cruds.tutor.fields.facebook') }}</label>
-                    <input class="form-control {{ $errors->has('facebook') ? 'is-invalid' : '' }}" type="text" name="facebook" id="facebook" value="{{ old('facebook', $tutor->facebook) }}">
-                    @if($errors->has('facebook'))
-                        <span class="text-danger">{{ $errors->first('facebook') }}</span>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.facebook_helper') }}</span>
+                {{-- TASKS --}}
+                <ul class="nav nav-tabs row">
+                    @foreach (config('app.locales') as $key_tasks => $value_tasks)
+                        <li class="nav-item">
+                            <a href="#tab_tasks_{{ $value_tasks }}"
+                               class="nav-link {{ $catTab == $key_tasks ? 'active' : '' }} text-uppercase">
+                                {{ $value_tasks === 'kr' ? 'ўз' : $value_tasks}}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="tab-content row">
+                    @foreach (config('app.locales') as $key_tasks => $item_tasks)
+                        <div class="tab-pane {{ $catTab == $key_tasks ? 'active' : '' }}"
+                             id="tab_tasks_{{ $item_tasks }}" style="width: 100%">
+                            <div class="form-group">
+                                <label for="tasks">Vazifalari ({{ $item_tasks === 'kr' ? 'ўз' : $item_tasks }})</label>
+                                <textarea id="tasks_{{ $item_tasks }}" class="textarea form-control summernote"
+                                          style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
+                                          name="tasks_{{ $item_tasks }}">{{ old('tasks_'.$item_tasks, $tutor['tasks_'.$item_tasks]) }}</textarea>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="form-group">
-                    <label for="twitter">{{ trans('cruds.tutor.fields.twitter') }}</label>
-                    <input class="form-control {{ $errors->has('twitter') ? 'is-invalid' : '' }}" type="text" name="twitter" id="twitter" value="{{ old('twitter', $tutor->twitter) }}">
-                    @if($errors->has('twitter'))
-                        <span class="text-danger">{{ $errors->first('twitter') }}</span>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.twitter_helper') }}</span>
+
+                <ul class="nav nav-tabs row">
+                    @foreach (config('app.locales') as $key_content => $value_content)
+                        <li class=" nav-item">
+                            <a href="#address_{{ $value_content }}" class="nav-link  {{ $catTab == $key_content ? 'active' : '' }} text-uppercase">{{ $value_content === 'kr' ? 'ўз' : $value_content}}</a>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="tab-content row">
+                    @foreach (config('app.locales') as $key_content => $item_content)
+                        <div class="tab-pane {{ $catTab == $key_content ? 'active' : '' }}" id="address_{{ $item_content }}" style="width: 100%">
+                            <div class="form-group">
+                                <label for="address">Address({{ $value_content === 'kr' ? 'ўз' : $item_content }})</label>
+                                <input
+                                    class="form-control {{ $errors->has('full_name') ? 'is-invalid' : '' }}"
+                                    type="text" name="address_{{ $item_content }}"
+                                    id="address_{{ $item_content }}"
+                                    value="{{ old('address_'.$item_content, $tutor['address_'.$item_content]) }}"
+                                >
+                                @if($errors->has('address'))
+                                    <span class="text-danger">{{ $errors->first('address') }}</span>
+                                @endif
+                                {{--                            <span class="help-block">{{ trans('cruds.tutor.fields.full_name_helper') }}</span>--}}
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="form-group">
-                    <label for="gmail">{{ trans('cruds.tutor.fields.gmail') }}</label>
-                    <input class="form-control {{ $errors->has('gmail') ? 'is-invalid' : '' }}" type="text" name="gmail" id="gmail" value="{{ old('gmail', $tutor->gmail) }}">
-                    @if($errors->has('gmail'))
-                        <span class="text-danger">{{ $errors->first('gmail') }}</span>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.gmail_helper') }}</span>
+
+                <ul class="nav nav-tabs row">
+                    @foreach (config('app.locales') as $key_content => $value_content)
+                        <li class=" nav-item">
+                            <a href="#work_time_{{ $value_content }}" class="nav-link  {{ $catTab == $key_content ? 'active' : '' }} text-uppercase">{{ $value_content === 'kr' ? 'ўз' : $value_content}}</a>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="tab-content row">
+                    @foreach (config('app.locales') as $key_content => $item_content)
+                        <div class="tab-pane {{ $catTab == $key_content ? 'active' : '' }}" id="work_time_{{ $item_content }}" style="width: 100%">
+                            <div class="form-group">
+                                <label for="address">Ish vaqti({{ $value_content === 'kr' ? 'ўз' : $item_content }})</label>
+                                <input
+                                    class="form-control {{ $errors->has('work_time') ? 'is-invalid' : '' }}"
+                                    type="text" name="work_time_{{ $item_content }}"
+                                    id="work_time_{{ $item_content }}"
+                                    value="{{ old('work_time_'.$item_content, $tutor['work_time_'.$item_content]) }}"
+                                >
+                                @if($errors->has('work_time'))
+                                    <span class="text-danger">{{ $errors->first('work_time') }}</span>
+                                @endif
+                                {{--                            <span class="help-block">{{ trans('cruds.tutor.fields.full_name_helper') }}</span>--}}
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+
+
                 <div class="form-group">
-                    <label for="rss">{{ trans('cruds.tutor.fields.rss') }}</label>
-                    <input class="form-control {{ $errors->has('rss') ? 'is-invalid' : '' }}" type="text" name="rss" id="rss" value="{{ old('rss', $tutor->rss) }}">
-                    @if($errors->has('rss'))
-                        <span class="text-danger">{{ $errors->first('rss') }}</span>
+                    <label for="email">Email</label>
+                    <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="text" name="email" id="email" value="{{ old('email', $tutor['email']) }}">
+                    @if($errors->has('email'))
+                        <span class="text-danger">{{ $errors->first('email') }}</span>
                     @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.rss_helper') }}</span>
+                    {{--                <span class="help-block">{{ trans('cruds.tutor.fields.email_helper') }}</span>--}}
                 </div>
+
                 <div class="form-group">
-                    <label for="youtube">{{ trans('cruds.tutor.fields.youtube') }}</label>
-                    <input class="form-control {{ $errors->has('youtube') ? 'is-invalid' : '' }}" type="text" name="youtube" id="youtube" value="{{ old('youtube', $tutor->youtube) }}">
-                    @if($errors->has('youtube'))
-                        <span class="text-danger">{{ $errors->first('youtube') }}</span>
+                    <label for="phone">Telefon raqam</label>
+                    <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="text" name="phone" id="phone" value="{{ old('phone', $tutor['phone']) }}">
+                    @if($errors->has('phone'))
+                        <span class="text-danger">{{ $errors->first('phone') }}</span>
                     @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.youtube_helper') }}</span>
+                    {{--                <span class="help-block">{{ trans('cruds.tutor.fields.phone_helper') }}</span>--}}
                 </div>
+
                 <div class="form-group">
-                    <label for="linkedin">{{ trans('cruds.tutor.fields.linkedin') }}</label>
-                    <input class="form-control {{ $errors->has('linkedin') ? 'is-invalid' : '' }}" type="text" name="linkedin" id="linkedin" value="{{ old('linkedin', $tutor->linkedin) }}">
-                    @if($errors->has('linkedin'))
-                        <span class="text-danger">{{ $errors->first('linkedin') }}</span>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.linkedin_helper') }}</span>
-                </div>
-                <div class="form-group">
-                    <label for="telegram">{{ trans('cruds.tutor.fields.telegram') }}</label>
-                    <input class="form-control {{ $errors->has('telegram') ? 'is-invalid' : '' }}" type="text" name="telegram" id="telegram" value="{{ old('telegram', $tutor->telegram) }}">
-                    @if($errors->has('telegram'))
-                        <span class="text-danger">{{ $errors->first('telegram') }}</span>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.telegram_helper') }}</span>
-                </div>
-                <div class="form-group">
-                    <label for="instagram">{{ trans('cruds.tutor.fields.instagram') }}</label>
-                    <input class="form-control {{ $errors->has('instagram') ? 'is-invalid' : '' }}" type="text" name="instagram" id="instagram" value="{{ old('instagram', $tutor->instagram) }}">
-                    @if($errors->has('instagram'))
-                        <span class="text-danger">{{ $errors->first('instagram') }}</span>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.instagram_helper') }}</span>
-                </div>
-                <div class="form-group">
-                    <label for="sort">{{ trans('cruds.tutor.fields.sort') }}</label>
-                    <input class="form-control {{ $errors->has('sort') ? 'is-invalid' : '' }}" type="number" name="sort" id="sort" value="{{ old('sort', '1') }}" step="1">
+                    <label for="sort">Saralash</label>
+                    <input class="form-control {{ $errors->has('sort') ? 'is-invalid' : '' }}" type="number" name="sort" id="sort" value="{{ old('sort', $tutor['sort']) }}" step="1">
                     @if($errors->has('sort'))
                         <span class="text-danger">{{ $errors->first('sort') }}</span>
                     @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.sort_helper') }}</span>
+                    {{--                <span class="help-block">{{ trans('cruds.tutor.fields.sort_helper') }}</span>--}}
                 </div>
 
                 <div class="form-group">
                     <div class="form-check {{ $errors->has('status') ? 'is-invalid' : '' }}">
                         <input type="hidden" name="status" value="0">
                         <input class="form-check-input" type="checkbox" name="status" id="status" value="1" {{ old('status', 0) == 1 || old('status') === null ? 'checked' : '' }}>
-                        <label class="form-check-label" for="status">{{ trans('cruds.tutor.fields.status') }}</label>
+                        <label class="form-check-label" for="status">Holati</label>
                     </div>
                     @if($errors->has('status'))
                         <span class="text-danger">{{ $errors->first('status') }}</span>
                     @endif
-                    <span class="help-block">{{ trans('cruds.tutor.fields.status_helper') }}</span>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-danger" type="submit">

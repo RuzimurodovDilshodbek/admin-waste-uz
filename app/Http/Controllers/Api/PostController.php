@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ManagementPerson;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -24,5 +25,23 @@ class PostController extends Controller
             'success' => true,
             'data' => $posts
         ]);
+    }
+
+
+    public function getManagementPersons(Request $request)
+    {
+        $query = ManagementPerson::query();
+
+        if ($request->has('type')) {
+            $query->where('type',$request->type);
+        }
+
+        $management = $query->latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $management
+        ]);
+
     }
 }

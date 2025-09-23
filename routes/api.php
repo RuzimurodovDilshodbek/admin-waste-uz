@@ -36,5 +36,6 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api'], function 
 });
 Route::group(['prefix' => 'v1'], function () {
     Route::get('posts', [PostController::class, 'index']);
+    Route::get('get-management-persons', [PostController::class, 'getManagementPersons']);
     Route::get('statistics', [StatisticController::class, 'index']);
 });

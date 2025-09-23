@@ -7,22 +7,21 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyTutorRequest;
 use App\Http\Requests\StoreTutorRequest;
 use App\Http\Requests\UpdateTutorRequest;
+use App\Models\ManagementPerson;
 use App\Models\Tutor;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
-class TutorController extends Controller
+class ManagementPersonController extends Controller //tutors o'zgartirilyabdi
 {
     use MediaUploadingTrait;
 
     public function index()
     {
-        dd('dsf');
-        abort_if(Gate::denies('tutor_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $tutors = Tutor::with(['media'])->get();
+        $tutors = ManagementPerson::with(['media'])->get();
 
         return view('admin.tutors.index', compact('tutors'));
     }
@@ -40,7 +39,7 @@ class TutorController extends Controller
 
     public function store(StoreTutorRequest $request)
     {
-        $tutor = Tutor::create($request->all());
+        $tutor = ManagementPerson::create($request->all());
 
         if ($request->image_base64) {
             [$imageName, $imageName2] = $this->storeBase64($request->image_base64);
@@ -50,20 +49,17 @@ class TutorController extends Controller
             $tutor->addMedia(storage_path('tmp/uploads/' . $imageName))->toMediaCollection('photo');
         }
 
-//        if ($request->input('photo', false)) {
-//            $tutor->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
-//        }
-
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $tutor->id]);
         }
 
-        return redirect()->route('admin.tutors.index');
+        return redirect()->route('admin.managementPersons.index');
     }
 
-    public function edit(Tutor $tutor)
+    public function edit($id)
     {
-        abort_if(Gate::denies('tutor_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $tutor = ManagementPerson::with(['media'])->findOrFail($id);
+//        abort_if(Gate::denies('tutor_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $catTab = 0;
 
@@ -72,8 +68,9 @@ class TutorController extends Controller
         return view('admin.tutors.edit', compact('tutor','catTab', 'locales'));
     }
 
-    public function update(UpdateTutorRequest $request, Tutor $tutor)
+    public function update(UpdateTutorRequest $request, ManagementPerson $tutor)
     {
+
         $tutor->update($request->all());
 
 //        if ($request->input('photo', false)) {
@@ -94,11 +91,12 @@ class TutorController extends Controller
             $tutor->addMedia(storage_path('tmp/uploads/' . $imageName))->toMediaCollection('photo');
         }
 
-        return redirect()->route('admin.tutors.index');
+        return redirect()->route('admin.managementPersons.index');
     }
 
-    public function show(Tutor $tutor)
+    public function show($id)
     {
+        $tutor = ManagementPerson::with(['media'])->findOrFail($id);
         abort_if(Gate::denies('tutor_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.tutors.show', compact('tutor'));

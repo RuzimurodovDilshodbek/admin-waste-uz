@@ -21,58 +21,47 @@ class StoreTutorRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'firstname' => [
+            'full_name_uz' => [
+                'string',
+                'required',
+            ],
+            'full_name_kr' => [
                 'string',
                 'nullable',
             ],
-            'lastname' => [
+            'full_name_ru' => [
+                'string',
+                'nullable',
+            ],
+            'full_name_en' => [
+                'string',
+                'nullable',
+            ],
+            'position_name_uz' => [
+                'string',
+                'required',
+            ],
+            'position_name_kr' => [
+                'string',
+                'nullable',
+            ],
+            'position_name_ru' => [
+                'string',
+                'nullable',
+            ],
+            'position_name_en' => [
                 'string',
                 'nullable',
             ],
             'image_base64' => [
                 'required',
             ],
-            'facebook' => [
-                'string',
-                'nullable',
-            ],
-            'twitter' => [
-                'string',
-                'nullable',
-            ],
-            'gmail' => [
-                'string',
-                'nullable',
-            ],
-            'rss' => [
-                'string',
-                'nullable',
-            ],
-            'youtube' => [
-                'string',
-                'nullable',
-            ],
-            'linkedin' => [
-                'string',
-                'nullable',
-            ],
-            'telegram' => [
-                'string',
-                'nullable',
-            ],
-            'instagram' => [
-                'string',
-                'nullable',
-            ],
+
             'sort' => [
                 'nullable',
                 'integer',
                 'min:-2147483648',
                 'max:2147483647',
-            ],
-            'meta_keywords' => [
-                'string',
-                'nullable',
             ],
         ];
     }
