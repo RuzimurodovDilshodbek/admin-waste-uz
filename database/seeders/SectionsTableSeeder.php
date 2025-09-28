@@ -10,7 +10,9 @@ class SectionsTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::statement('TRUNCATE TABLE sections RESTART IDENTITY CASCADE;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('sections')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
          Section::create([
             'title_uz' => 'Yangiliklar',
