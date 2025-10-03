@@ -9,12 +9,12 @@
                         <div>
                             Админлар учун панел
                         </div>
-                        <div>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" {{ $site_status == 0 ? 'checked' : null }}  id="customSwitch1">
-                                <label class="custom-control-label" for="customSwitch1">Сайтни активсиз ҳолатга ўтказиш</label>
-                            </div>
-                        </div>
+{{--                        <div>--}}
+{{--                            <div class="custom-control custom-switch">--}}
+{{--                                <input type="checkbox" class="custom-control-input" {{ $site_status == 0 ? 'checked' : null }}  id="customSwitch1">--}}
+{{--                                <label class="custom-control-label" for="customSwitch1">Сайтни активсиз ҳолатга ўтказиш</label>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
 
