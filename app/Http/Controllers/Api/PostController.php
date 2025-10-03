@@ -80,10 +80,9 @@ class PostController extends Controller
             ->where('posts.id',$id)
             ->where("posts.status", 1)
             ->whereNotNull('posts.title_'.$request_lang)
-            ->select('id', 'slug_'.$request_lang.' as get_slug','title_'.$request_lang.' as get_title', 'section_ids',
-                'publish_date','description_'.$request_lang.' as get_description','content_'.$request_lang.' as get_content','tutor_id','image_description_'.$request_lang.' as get_image_description',
-
-            )
+            ->select('id', 'slug_uz','slug_ru','slug_en','title_uz','title_ru','title_en', 'section_ids',
+                'publish_date','description_uz','description_ru','description_en','content_uz','content_ru','content_en',
+                'tutor_id','image_description_uz','image_description_ru','image_description_en')
             ->first();
 
         if ($post) {
@@ -111,7 +110,6 @@ class PostController extends Controller
         $resent_posts = Post::query()
             ->where('section_ids',$post->section_ids)
             ->orderBy("created_at", "DESC")->limit(6)
-            ->select($columns)
             ->get();
 
         $this->processPosts($resent_posts, $request_lang);
