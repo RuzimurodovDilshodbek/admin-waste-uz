@@ -51,7 +51,9 @@ class PostController extends Controller
 
     public function getManagementPersons(Request $request)
     {
-        $query = ManagementPerson::query();
+        $query = ManagementPerson::query()
+            ->where('status', 1)
+            ->whereNull('deleted_at');
 
         if ($request->has('type')) {
             $query->where('type',$request->type);

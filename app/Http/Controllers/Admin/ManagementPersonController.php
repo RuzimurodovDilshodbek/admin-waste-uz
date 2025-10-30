@@ -87,7 +87,7 @@ class ManagementPersonController extends Controller //tutors o'zgartirilyabdi
             [$imageName, $imageName2] = $this->storeBase64($request->image_base64);
         }
 
-        if (isset($imageName) && imageName) {
+        if (isset($imageName) && $imageName) {
             $tutor->addMedia(storage_path('tmp/uploads/' . $imageName))->toMediaCollection('photo');
         }
 
@@ -102,8 +102,10 @@ class ManagementPersonController extends Controller //tutors o'zgartirilyabdi
         return view('admin.tutors.show', compact('tutor'));
     }
 
-    public function destroy(Tutor $tutor)
+    public function destroy($id)
     {
+        $tutor = ManagementPerson::with(['media'])->findOrFail($id);
+
         abort_if(Gate::denies('tutor_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $tutor->delete();
