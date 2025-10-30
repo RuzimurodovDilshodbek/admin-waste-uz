@@ -68,8 +68,9 @@ class ManagementPersonController extends Controller //tutors o'zgartirilyabdi
         return view('admin.tutors.edit', compact('tutor','catTab', 'locales'));
     }
 
-    public function update(UpdateTutorRequest $request, ManagementPerson $tutor)
+    public function update(UpdateTutorRequest $request, $id)
     {
+        $tutor = ManagementPerson::with(['media'])->findOrFail($id);
 
         $tutor->update($request->all());
 

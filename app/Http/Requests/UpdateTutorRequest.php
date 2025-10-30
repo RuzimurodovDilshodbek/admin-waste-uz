@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Tutor;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
@@ -20,47 +19,120 @@ class UpdateTutorRequest extends FormRequest
             'slug' => [
                 'string',
                 'required',
+                'max:255',
             ],
-            'firstname' => [
+            'full_name_uz' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'full_name_kr' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'full_name_ru' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'full_name_en' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'position_name_uz' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'position_name_kr' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'position_name_ru' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'position_name_en' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'about_uz' => [
                 'string',
                 'nullable',
             ],
-            'lastname' => [
+            'about_kr' => [
                 'string',
                 'nullable',
             ],
-            'photo' => [
-                'nullable',
-            ],
-            'facebook' => [
+            'about_ru' => [
                 'string',
                 'nullable',
             ],
-            'twitter' => [
+            'about_en' => [
                 'string',
                 'nullable',
             ],
-            'gmail' => [
+            'tasks_uz' => [
                 'string',
                 'nullable',
             ],
-            'rss' => [
+            'tasks_kr' => [
                 'string',
                 'nullable',
             ],
-            'youtube' => [
+            'tasks_ru' => [
                 'string',
                 'nullable',
             ],
-            'linkedin' => [
+            'tasks_en' => [
                 'string',
                 'nullable',
             ],
-            'telegram' => [
+            'phone' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
+            'email' => [
+                'string',
+                'nullable',
+                'email',
+                'max:255',
+            ],
+            'address_uz' => [
                 'string',
                 'nullable',
             ],
-            'instagram' => [
+            'address_kr' => [
+                'string',
+                'nullable',
+            ],
+            'address_ru' => [
+                'string',
+                'nullable',
+            ],
+            'address_en' => [
+                'string',
+                'nullable',
+            ],
+            'work_time_uz' => [
+                'string',
+                'nullable',
+            ],
+            'work_time_kr' => [
+                'string',
+                'nullable',
+            ],
+            'work_time_ru' => [
+                'string',
+                'nullable',
+            ],
+            'work_time_en' => [
                 'string',
                 'nullable',
             ],
@@ -69,7 +141,16 @@ class UpdateTutorRequest extends FormRequest
                 'integer',
                 'min:-2147483648',
                 'max:2147483647',
-            ]
+            ],
+            'status' => [
+                'boolean',
+                'nullable',
+            ],
+            'type' => [
+                'string',
+                'nullable',
+                'max:255',
+            ],
         ];
     }
 }
