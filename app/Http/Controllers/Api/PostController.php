@@ -59,7 +59,7 @@ class PostController extends Controller
             $query->where('type',$request->type);
         }
 
-        $management = $query->latest()->get();
+        $management = $query->orderBy('id', 'ASC')->get();
 
         return response()->json([
             'success' => true,
