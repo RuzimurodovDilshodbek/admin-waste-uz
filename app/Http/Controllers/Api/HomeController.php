@@ -257,7 +257,10 @@ class HomeController extends Controller
             return response()->errorJson('post not found', 404);
         }
 
-        $post->makeHidden(['card_image', 'media', 'section_ids']);
+        // Faqat rasm URL sini olish, to'liq media ob'ektini emas
+        $photo = $post->detail_image?->url;
+        $post->makeHidden(['card_image', 'media', 'section_ids', 'detail_image', 'section']);
+        $post['photo'] = $photo;
 
         // Ko'rishlar sonini faqat yangi IP kelganda oshirish
         $ip = request()->ip();
@@ -289,7 +292,7 @@ class HomeController extends Controller
         $most_read_posts = Post::query()
             ->with('media')
             ->where('id', '!=', $post->id)
-            ->when($primarySectionId, fn($q) => $q->whereRaw("FIND_IN_SET(?, section_ids)", [$primarySectionId]))
+            ->when($primarySectionId, fn($q) => $q->whereRaw("? = ANY(string_to_array(section_ids, ','))", [$primarySectionId]))
             ->whereNotNull('title_' . $request_lang)
             ->orderBy("views_count", "DESC")->limit(4)
             ->select($columns)
@@ -298,7 +301,7 @@ class HomeController extends Controller
         $resent_posts = Post::query()
             ->with('media')
             ->where('id', '!=', $post->id)
-            ->when($primarySectionId, fn($q) => $q->whereRaw("FIND_IN_SET(?, section_ids)", [$primarySectionId]))
+            ->when($primarySectionId, fn($q) => $q->whereRaw("? = ANY(string_to_array(section_ids, ','))", [$primarySectionId]))
             ->whereNotNull('title_' . $request_lang)
             ->orderBy("created_at", "DESC")->limit(6)
             ->select($columns)
@@ -318,7 +321,9 @@ class HomeController extends Controller
             'resent_posts' => $resent_posts,
         ];
 
-        return response()->successJson(['data' => $result]);
+        return response()->successJson(['data' => $result])
+            ->header('Cache-Control', 'public, max-age=300, stale-while-revalidate=60')
+            ->header('Vary', 'Accept-Language');
     }
 
     public function getCategoryId(Request $request, $id) {

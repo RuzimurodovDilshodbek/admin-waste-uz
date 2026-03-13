@@ -46,7 +46,7 @@ class PostController extends Controller
             );
 
         if ($request->has('section_id')) {
-            $query->whereRaw("FIND_IN_SET(?, section_ids)", [$request->input('section_id')]);
+            $query->whereRaw("? = ANY(string_to_array(section_ids, ','))", [$request->input('section_id')]);
         }
 
         $limit = min((int) $request->input('limit', 20), 50);

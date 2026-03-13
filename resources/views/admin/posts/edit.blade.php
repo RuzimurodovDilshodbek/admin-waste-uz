@@ -172,6 +172,27 @@
                 ],
                 buttons: {
                     custom: CustomButton
+                },
+                callbacks: {
+                    onImageUpload: function(files) {
+                        var editor = this;
+                        var formData = new FormData();
+                        formData.append('upload', files[0]);
+                        formData.append('_token', '{{ csrf_token() }}');
+                        $.ajax({
+                            url: '{{ route("admin.posts.storeCKEditorImages") }}',
+                            method: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(data) {
+                                $(editor).summernote('insertImage', data.url);
+                            },
+                            error: function() {
+                                console.error('Rasm yuklashda xatolik');
+                            }
+                        });
+                    }
                 }
             });
 

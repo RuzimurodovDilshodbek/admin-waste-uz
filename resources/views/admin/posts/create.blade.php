@@ -530,6 +530,35 @@ function initQuillEditor(lang) {
         placeholder: 'Maqola matnini yozing...',
         modules: { toolbar: quillToolbar }
     });
+
+    // Rasmlarni base64 emas, serverga yuklash
+    q.getModule('toolbar').addHandler('image', function () {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+        input.onchange = function () {
+            var file = input.files[0];
+            if (!file) return;
+            var formData = new FormData();
+            formData.append('upload', file);
+            formData.append('_token', '{{ csrf_token() }}');
+            fetch('{{ route("admin.posts.storeCKEditorImages") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.url) {
+                    var range = q.getSelection(true);
+                    q.insertEmbed(range.index, 'image', data.url);
+                    q.setSelection(range.index + 1);
+                }
+            })
+            .catch(function(err) { console.error('Rasm yuklashda xatolik:', err); });
+        };
+    });
+
     quillInstances[lang] = q;
 }
 
