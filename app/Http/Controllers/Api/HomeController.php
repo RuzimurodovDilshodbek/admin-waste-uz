@@ -234,46 +234,72 @@ class HomeController extends Controller
         $columns = call_user_func($this->columns, $request_lang);
 
         $post = Post::query()
-            ->with("tags","editor")
-            ->where('posts.id',$id)
+            ->with("tags", "editor", "media")
+            ->where('posts.id', $id)
             ->where("posts.status", 1)
-            ->whereNotNull('posts.title_'.$request_lang)
-            ->select('id', 'slug_'.$request_lang.' as get_slug','title_'.$request_lang.' as get_title', 'section_ids',
-                'publish_date', 'views_count','youtube_link','description_'.$request_lang.' as get_description','content_'.$request_lang.' as get_content','tutor_id','image_description_'.$request_lang.' as get_image_description',
-
-                )
+            ->whereNotNull('posts.title_' . $request_lang)
+            ->select(
+                'id',
+                'slug_' . $request_lang . ' as get_slug',
+                'title_' . $request_lang . ' as get_title',
+                'section_ids',
+                'publish_date',
+                'views_count',
+                'youtube_link',
+                'description_' . $request_lang . ' as get_description',
+                'content_' . $request_lang . ' as get_content',
+                'tutor_id',
+                'image_description_' . $request_lang . ' as get_image_description'
+            )
             ->first();
 
-        if ($post) {
-            $post->makeHidden(['card_image', 'media', 'section_ids']);
-            $ip = request()->ip();
-            $postView = PostView::query()->where('post_id', $post->id)->where('ip', $ip)->orderBy("created_at", "DESC")->first();
-
-            if (!empty($postView)){
-                if (Carbon::parse($postView->created_at)->diffInMinutes(now())  > 1){
-                    PostView::query()->create([
-                        'ip' => $ip,
-                        'post_id' => $post->id
-                    ]);
-                }
-            } else {
-                PostView::query()->create([
-                    'ip' => $ip,
-                    'post_id' => $post->id
-                ]);
-            }
-        } else {
+        if (!$post) {
             return response()->errorJson('post not found', 404);
         }
 
+        $post->makeHidden(['card_image', 'media', 'section_ids']);
+
+        // Ko'rishlar sonini faqat yangi IP kelganda oshirish
+        $ip = request()->ip();
+        $postView = PostView::query()
+            ->where('post_id', $post->id)
+            ->where('ip', $ip)
+            ->orderBy("created_at", "DESC")
+            ->first();
+
+        $isNewView = false;
+        if (!empty($postView)) {
+            if (Carbon::parse($postView->created_at)->diffInMinutes(now()) > 1) {
+                PostView::query()->create(['ip' => $ip, 'post_id' => $post->id]);
+                $isNewView = true;
+            }
+        } else {
+            PostView::query()->create(['ip' => $ip, 'post_id' => $post->id]);
+            $isNewView = true;
+        }
+
+        if ($isNewView) {
+            $post->update(['views_count' => 1 + $post->views_count]);
+        }
+
+        // section_ids raw string dan birinchi bo'limni olish (masalan "1,2" → "1")
+        $rawSectionIds = $post->getAttributes()['section_ids'] ?? '';
+        $primarySectionId = trim(explode(',', $rawSectionIds)[0]);
+
         $most_read_posts = Post::query()
-            ->where('section_ids',$post->section_ids)
+            ->with('media')
+            ->where('id', '!=', $post->id)
+            ->when($primarySectionId, fn($q) => $q->whereRaw("FIND_IN_SET(?, section_ids)", [$primarySectionId]))
+            ->whereNotNull('title_' . $request_lang)
             ->orderBy("views_count", "DESC")->limit(4)
             ->select($columns)
             ->get();
 
         $resent_posts = Post::query()
-            ->where('section_ids',$post->section_ids)
+            ->with('media')
+            ->where('id', '!=', $post->id)
+            ->when($primarySectionId, fn($q) => $q->whereRaw("FIND_IN_SET(?, section_ids)", [$primarySectionId]))
+            ->whereNotNull('title_' . $request_lang)
             ->orderBy("created_at", "DESC")->limit(6)
             ->select($columns)
             ->get();
@@ -281,13 +307,8 @@ class HomeController extends Controller
         $this->processPosts($most_read_posts, $request_lang);
         $this->processPosts($resent_posts, $request_lang);
 
-        $post->update([
-            'views_count' => 1 + $post->views_count
-        ]);
-
         $postClone = clone $post;
         if (isset($post->youtube_link)) {
-
             $postClone->youtube_link = 'https://www.youtube.com/embed/' . getYouTubeVideoId($post->youtube_link);
         }
 
@@ -297,12 +318,7 @@ class HomeController extends Controller
             'resent_posts' => $resent_posts,
         ];
 
-        if ($result['mostReadPosts']->isEmpty() &&
-            $result['resent_posts']->isEmpty()) {
-            return response()->errorJson('post not found', 404);
-        } else {
-            return response()->successJson(['data' => $result]);
-        }
+        return response()->successJson(['data' => $result]);
     }
 
     public function getCategoryId(Request $request, $id) {
