@@ -14,6 +14,7 @@ class PostController extends Controller
     // GET /api/v1/posts
 
     protected $availableLanguages;
+    protected $columns;
 
     public function __construct()
     {
@@ -33,14 +34,25 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        $query = Post::query();
+        $query = Post::query()
+            ->with('media')
+            ->where('status', 1)
+            ->select(
+                'id',
+                'title_uz', 'title_ru', 'title_en',
+                'slug_uz', 'slug_ru', 'slug_en',
+                'section_ids',
+                'publish_date'
+            );
 
-        // agar section_id yuborilsa filterlash
         if ($request->has('section_id')) {
-            $query->whereJsonContains('section_ids', $request->section_id);
+            $query->whereRaw("FIND_IN_SET(?, section_ids)", [$request->input('section_id')]);
         }
 
-        $posts = $query->latest()->get();
+        $limit = min((int) $request->input('limit', 20), 50);
+        $posts = $query->latest('publish_date')->limit($limit)->get();
+
+        $posts->makeHidden(['section']);
 
         return response()->json([
             'success' => true,
