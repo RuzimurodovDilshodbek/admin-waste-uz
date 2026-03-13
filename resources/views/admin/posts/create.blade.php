@@ -298,9 +298,11 @@ img { max-width: 100%; }
                 <div class="section-cards">
                     @php
                         $sectionIcons = [
-                            'Yangiliklar'        => ['icon'=>'fa-newspaper','color'=>'#16a34a','bg'=>'#dcfce7'],
-                            "E'lonlar"           => ['icon'=>'fa-bullhorn', 'color'=>'#0284c7','bg'=>'#e0f2fe'],
-                            'Kuzatuv kameralari' => ['icon'=>'fa-video',   'color'=>'#ea580c','bg'=>'#fff7ed'],
+                            'Yangiliklar'        => ['icon'=>'fa-newspaper',     'color'=>'#16a34a','bg'=>'#dcfce7'],
+                            "E'lonlar"           => ['icon'=>'fa-bullhorn',      'color'=>'#0284c7','bg'=>'#e0f2fe'],
+                            'Kuzatuv kameralari' => ['icon'=>'fa-video',         'color'=>'#ea580c','bg'=>'#fff7ed'],
+                            'Bizning xizmatlar'  => ['icon'=>'fa-briefcase',     'color'=>'#7c3aed','bg'=>'#ede9fe'],
+                            "Sotuv bo'limi"      => ['icon'=>'fa-shopping-cart', 'color'=>'#0891b2','bg'=>'#ecfeff'],
                         ];
                     @endphp
                     @foreach($sections as $id => $entry)

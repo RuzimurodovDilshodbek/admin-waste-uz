@@ -69,6 +69,26 @@
 
                 @can('section_access')
                     <li class="nav-item">
+                        <a href="{{ route('admin.postGetSectionId', ['id' => 4]) }}"
+                           class="nav-link {{ request()->is('admin/post*') && (Request::get('id') == 4 || Request::get('section_id') == 4) ? 'active' : '' }}">
+                            <i class="fas fa-fw fa-briefcase nav-icon"></i>
+                            <p>Bizning xizmatlar</p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('section_access')
+                    <li class="nav-item">
+                        <a href="{{ route('admin.postGetSectionId', ['id' => 5]) }}"
+                           class="nav-link {{ request()->is('admin/post*') && (Request::get('id') == 5 || Request::get('section_id') == 5) ? 'active' : '' }}">
+                            <i class="fas fa-fw fa-shopping-cart nav-icon"></i>
+                            <p>Sotuv bo'limi</p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('section_access')
+                    <li class="nav-item">
                         <a href="{{ route('admin.sections.index') }}"
                            class="nav-link {{ request()->is('admin/sections') || request()->is('admin/sections/*') ? 'active' : '' }}">
                             <i class="fas fa-fw fa-layer-group nav-icon"></i>
