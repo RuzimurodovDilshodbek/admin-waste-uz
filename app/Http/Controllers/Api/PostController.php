@@ -46,7 +46,13 @@ class PostController extends Controller
             );
 
         if ($request->has('section_id')) {
-            $query->whereRaw("? = ANY(string_to_array(section_ids, ','))", [$request->input('section_id')]);
+            $sid = $request->input('section_id');
+            $query->where(function ($q) use ($sid) {
+                $q->where('section_ids', $sid)
+                  ->orWhereRaw("section_ids LIKE ?", [$sid . ',%'])
+                  ->orWhereRaw("section_ids LIKE ?", ['%,' . $sid . ',%'])
+                  ->orWhereRaw("section_ids LIKE ?", ['%,' . $sid]);
+            });
         }
 
         $limit = min((int) $request->input('limit', 20), 50);
